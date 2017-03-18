@@ -6,3 +6,4 @@ nimcache/
 
 # Binary files
 game
+*.so

@@ -146,7 +146,17 @@ proc init() =
 
 
 proc update(app: App, ua: UpdateArguments) =
-  app.running = ua.totalTime <= 2
+  # Poll for events
+  var event: sdl.Event
+  while sdl.pollEvent(event.addr) != 0:
+    # Check for quit (ESC press or X-out of window)
+    if event.kind == sdl.Quit:
+      # X - Out
+      app.running = false
+    elif event.kind == sdl.KeyDown:
+      if event.key.keysym.sym == sdl.K_Escape:
+        # ESC Press
+        app.running = false
 
 
 proc draw(app: App, da: DrawArguments) =
