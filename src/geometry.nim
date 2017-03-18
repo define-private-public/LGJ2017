@@ -1,8 +1,14 @@
 # Geometry logic, all in 2D
 
 import basic2d
-
 import strfmt
+
+export Point2D
+export Vector2D
+export Matrix2D
+export point2d
+export vector2D
+export matrix2d
 
 
 
@@ -38,21 +44,21 @@ method `$`*(self: Shape2D): string{.base.} =
 
 method `$`*(self: Circle): string =
   result  = "Circle [{0}]:".fmt(self.id)
-  result &= "  center=" & $self.center
-  result &= "  radius=" & $self.radius
+  result &= "\n  center=" & $self.center
+  result &= "\n  radius=" & $self.radius
 
 
 method `$`*(self: Rect): string =
   result  = "Rect [{0}]:".fmt(self.id)
-  result &= "  center=" & $self.center
-  result &= "  width=" & $self.width
-  result &= "  height=" & $self.height
+  result &= "\n  center=" & $self.center
+  result &= "\n  width=" & $self.width
+  result &= "\n  height=" & $self.height
 
 
 # Create a new Circle.
 # c -- center point of the circle
 # r -- radious of the circle, should be non-negative
-proc newCircle*(c: Point2D; r: float): Circle =
+proc newCircle*(c: Point2D = Point2D(); r: float = 0): Circle =
   assert(r >= 0)
 
   result = new(Circle)
@@ -65,7 +71,7 @@ proc newCircle*(c: Point2D; r: float): Circle =
 # c -- center point of the circle
 # w -- width of the rectangle, should be non-negative
 # h -- height of the rectangle, should be non-negative
-proc newRect*(c: Point2D; w, h: float): Rect =
+proc newRect*(c: Point2D = Point2D(); w, h: float = 0): Rect =
   assert(w >= 0)
   assert(h >= 0)
 

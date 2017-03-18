@@ -8,12 +8,19 @@ import
   sdl2/sdl_ttf as ttf,
   sdl2/sdl_mixer as mixer
 import opengl
-
-import app
-import init
-import update
-import draw
 import geometry
+
+
+# TODO temporary data, remove when drawing tests are done
+var
+  c: Circle
+  r: geometry.Rect
+
+
+include app
+include init
+include update
+include draw
 
 
 
@@ -68,8 +75,8 @@ proc initSDL(app: App): bool =
     "LGJ 2017 (w/ OpenGL ES 2.0)",
     sdl.WindowPosUndefined,
     sdl.WindowPosUndefined,
-    960,
-    540,
+    app.screenWidth,
+    app.screenHeight,
     sdl.WindowOpenGL
   )
   if app.window == nil:
@@ -116,6 +123,9 @@ proc shutdownSDL(app: App) =
 
 proc load() =
   echo "Loading!"
+
+  c = newCircle(point2D(0.5, 0.5), 0.5)
+  r = newRect(point2D(0, 0), 0.25, 1.5)
 
 
 proc unload() =

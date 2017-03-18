@@ -1,4 +1,6 @@
 # Update logic n' stuff
+#
+# this is meant to be included by `game.nim`
 
 import sdl2/sdl
 

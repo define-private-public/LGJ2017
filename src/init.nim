@@ -1,4 +1,6 @@
 # Game initilazeiont logic
+#
+# this is meant to be inclued by `game.nim`
 
 import app
 

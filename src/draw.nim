@@ -1,9 +1,14 @@
 # Game drawing logic
+#
+# This is meant to be inclued by `game.nim`
 
 import sdl2/sdl
 import opengl
 
 import app
+
+import geometry
+import drawGeometry
 
 type
   DrawArguments* = object
@@ -16,13 +21,7 @@ type
 proc draw*(app: App, da: DrawArguments) =
   glClear(GL_ColorBufferBit or GL_DepthBufferBit)
 
-  # TODO replace with shaders!
-  glBegin(GL_Quads)
-  glVertex2f(-0.5, -0.5)
-  glVertex2f( 0.5, -0.5)
-  glVertex2f( 0.5,  0.5)
-  glVertex2f(-0.5,  0.5)
-  glEnd()
+  # TODO, delete dis
 
   sdl.glSwapWindow(app.window)
 

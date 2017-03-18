@@ -7,3 +7,4 @@ nimcache/
 # Binary files
 game
 *.so
+tests/*Tests
