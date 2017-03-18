@@ -9,28 +9,11 @@ import
   sdl2/sdl_mixer as mixer
 import opengl
 
+import app
+import init
+import update
+import draw
 
-type
-  UpdateArguments = object
-    frameNumber: int  # Which number frame this is
-    deltaTime: float  # Time (in seconds) since last frame
-    totalTime: float  # Time (in seconds) since the game has started
-
-  DrawArguments = object
-    frameNumber: int  # Which number frame this is
-    deltaTime: float  # Time (in seconds) since last frame
-    totalTime: float  # Time (in seconds) since the game has started
-
-  App = ref AppObj
-  AppObj = object
-    window*: sdl.Window     # SDL Window ponter
-    glCtx*: sdl.GLContext   # OpenGL Context
-    running*: bool          # Is the app running?
-
-
-proc newApp(): App =
-  result = App()
-  result.running = false
 
 
 # foward decls
@@ -38,9 +21,6 @@ proc initSDL(app: App): bool  # Initlize the SDL2 backend & OpenGL ES 2.0
 proc shutdownSDL(app: App)    # Gracefully shutdown SDL2 and OpenGL
 proc load()                   # load & create resources
 proc unload()                 # delete resources
-proc init()                   # set initial state of game
-proc update(app: App, ua: UpdateArguments)    # Update function
-proc draw(app: App, da: DrawArguments)        # Render function
 
 
 proc initSDL(app: App): bool =
@@ -141,37 +121,6 @@ proc unload() =
   echo "Unloading!"
 
 
-proc init() =
-  echo "Set intial state."
-
-
-proc update(app: App, ua: UpdateArguments) =
-  # Poll for events
-  var event: sdl.Event
-  while sdl.pollEvent(event.addr) != 0:
-    # Check for quit (ESC press or X-out of window)
-    if event.kind == sdl.Quit:
-      # X - Out
-      app.running = false
-    elif event.kind == sdl.KeyDown:
-      if event.key.keysym.sym == sdl.K_Escape:
-        # ESC Press
-        app.running = false
-
-
-proc draw(app: App, da: DrawArguments) =
-  glClear(GL_ColorBufferBit or GL_DepthBufferBit)
-
-  # TODO replace with shaders!
-  glBegin(GL_Quads)
-  glVertex2f(-0.5, -0.5)
-  glVertex2f( 0.5, -0.5)
-  glVertex2f( 0.5,  0.5)
-  glVertex2f(-0.5,  0.5)
-  glEnd()
-
-  sdl.glSwapWindow(app.window)
-
 
 proc main() =
   # Setup
@@ -191,8 +140,7 @@ proc main() =
     sw = stopwatch()
 
   # Start
-  app.running = true
-  init()
+  init(app)
   sw.start()
   var t = sw.secs
   while app.running:
@@ -204,7 +152,6 @@ proc main() =
     ua.deltaTime = dt
     ua.totalTime = t
 
-    da.frameNumber = frameCount
     da.deltaTime = dt
     da.totalTime = t
 
