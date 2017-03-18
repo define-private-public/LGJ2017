@@ -5,4 +5,5 @@ It uses:
  - SDL2 (image, mixer, & ttf)
  - OpenGL ES
  - & More! (TODO document "more,")
+ - my stopwatch
 

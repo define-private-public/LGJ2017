@@ -1,0 +1,8 @@
+# Vim/Editor
+*.sw*
+
+# Nim leftovers
+nimcache/
+
+# Binary files
+game
