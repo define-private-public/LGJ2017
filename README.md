@@ -6,4 +6,5 @@ It uses:
  - OpenGL ES
  - & More! (TODO document "more,")
  - my stopwatch
+ - Get OpenGL ES 2.0 working
 

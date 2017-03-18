@@ -77,8 +77,9 @@ proc initSDL(app: App): bool =
     return false
 
   # Set opengl version to ES 2.0
+  # TODO correct this to use OpenGL ES
 #  discard sdl.glSetAttribute(sdl.GLContextProfileMask, sdl.GLContextProfileEs)
-  discard sdl.glSetAttribute(sdl.GLContextMajorVersion, 3)
+  discard sdl.glSetAttribute(sdl.GLContextMajorVersion, 4)
   discard sdl.glSetAttribute(sdl.GLContextMajorVersion, 0)
 
   # Create the window
