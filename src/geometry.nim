@@ -28,7 +28,7 @@ type
   RectObj = object of Shape2DObj
     center*: Point2D 
     width*, height*: float  # Should always be postive
-    angle*: float           # Rotation, in radians, CCW
+    angle*: float           # Rotation, in radians, CCW, TODO implement this!
 
 
 # the next available ID
@@ -53,6 +53,7 @@ method `$`*(self: Rect): string =
   result &= "\n  center=" & $self.center
   result &= "\n  width=" & $self.width
   result &= "\n  height=" & $self.height
+  result &= "\n  angle=" & $self.radius # TODO put it in degrees (and add unit)
 
 
 # Create a new Circle.
