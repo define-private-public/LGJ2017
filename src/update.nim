@@ -25,6 +25,20 @@ proc update*(app: App, ua: UpdateArguments) =
       # X - Out
       app.running = false
     elif event.kind == sdl.KeyDown:
-      if event.key.keysym.sym == sdl.K_Escape:
+      let sym = event.key.keysym.sym
+      if sym == sdl.K_Escape:
         # ESC Press
         app.running = false
+
+      if sym == sdl.K_Up:
+        r.center.y += 0.1
+
+      if sym == sdl.K_Down:
+        r.center.y -= 0.1
+
+      if sym == sdl.K_Left:
+        r.center.x -= 0.1
+
+      if sym == sdl.K_Right:
+        r.center.x += 0.1
+      

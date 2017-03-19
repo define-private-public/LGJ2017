@@ -131,7 +131,7 @@ proc load() =
   drawGeometry.load()
 
   c = newCircle(point2D(0.5, 0.5), 0.5)
-  r = newRect(point2D(0, 0), 0.25, 1.5)
+  r = newRect(point2D(2, 2), 0.25, 1.5)
 
 
 proc unload() =

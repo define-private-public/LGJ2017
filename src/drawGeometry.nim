@@ -39,8 +39,13 @@ var
   rectVertexShader: GLuint
   rectFragmentShader: GLuint
   rectShaderProgram: GLuint
+
+  # Shader locations
   rectWorldLoc: GLint
   rectDrawColorLoc: GLint
+  rectCenterLoc: GLint
+  rectWidthLoc: GLint
+  rectHeightLoc: GLint
 
 
 # Setup the OpenGL stuff for Rectangle rendering
@@ -66,6 +71,9 @@ proc loadRect(): bool =
   glUseProgram(rectShaderProgram)
   rectWorldLoc = glGetUniformLocation(rectShaderProgram, "world");
   rectDrawColorLoc = glGetUniformLocation(rectShaderProgram, "drawColor");
+  rectCenterLoc = glGetUniformLocation(rectShaderProgram, "center");
+  rectWidthLoc = glGetUniformLocation(rectShaderProgram, "width");
+  rectHeightLoc = glGetUniformLocation(rectShaderProgram, "height");
   glUseProgram(0)
 
   return (rectVertexShader != 0) and (rectFragmentshader != 0) and (rectShaderProgram != 0)
@@ -118,6 +126,9 @@ proc draw*(
   # TODO, use proer matrix sending
 #  glUniformMatrix2fv(rectWorldLoc, 1.GLsizei, GL_FALSE, cast[ptr GLfloat](worldMat.addr))
   glUniform2f(rectWorldLoc, worldMat.ax, worldMat.by)
+  glUniform2f(rectCenterLoc, rect.center.x, rect.center.y)
+  glUniform1f(rectWidthLoc, rect.width)
+  glUniform1f(rectHeightLoc, rect.height)
   glUniform4f(rectDrawColorLoc, drawClr.r, drawClr.g, drawClr.b, drawClr.a)
 
   # Draw it!
