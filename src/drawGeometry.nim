@@ -177,7 +177,7 @@ proc loadCircle(): bool =
   circleIndices.add(0)
 
   # The radius
-  const resolution = 32
+  const resolution = 64
   for i in 0..resolution:
     let theta = map(i.float, 0.float, resolution.float, 0.float, TAU)
     circleVertices.add(cos(theta))

@@ -73,6 +73,10 @@ proc initSDL(app: App): bool =
   discard sdl.glSetAttribute(sdl.GLContextMajorVersion, 4)
   discard sdl.glSetAttribute(sdl.GLContextMajorVersion, 0)
 
+  # Setup Antialiasing (The Enums don't exist in the SDL Nim wrapper, so we have to add them in manually)
+  discard sdl.glSetAttribute(13.GLattr, 1)
+  discard sdl.glSetAttribute(14.GLattr, 4)
+
   # Create the window
   app.window = sdl.createWindow(
     "LGJ 2017 (w/ OpenGL ES 2.0)",
@@ -105,8 +109,11 @@ proc initSDL(app: App): bool =
   glClearColor(0, 0, 0, 1)
 
   # Enable alpha blending
-  glEnable(GL_BLEND);
-  glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+  glEnable(GL_BLEND)
+  glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA)
+
+  # Enable Anti Aliasing
+  glEnable(GL_MULTISAMPLE)
 
   # Check for error
   if glGetError() != GL_NoError:
