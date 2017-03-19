@@ -102,6 +102,10 @@ proc initSDL(app: App): bool =
   # Set clear color
   glClearColor(0, 0, 0, 1)
 
+  # Enable alpha blending
+  glEnable(GL_BLEND);
+  glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+
   # Check for error
   if glGetError() != GL_NoError:
     echo "There was some issue with OpenGL setup."

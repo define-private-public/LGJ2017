@@ -5,6 +5,9 @@ import geometry
 import opengl
 import app
 import opengl_helpers
+import drawingMechanics
+
+export drawingMechanics
 
 var
   # General stuff
@@ -91,14 +94,23 @@ proc unload*() =
 
 # Draws a rectangle
 # TODO add fill/line option, and color
-proc draw*(rect: Rect) =
+proc draw*(rect: Rect; style: DrawingStyle = Outline) =
   glUseProgram(rectShaderProgram)
   glBindVertexArray(rectVAO);
 
+  # Send data to the shader
   # TODO, use proer matrix sending
 #  glUniformMatrix2fv(rectWorldLoc, 1.GLsizei, GL_FALSE, cast[ptr GLfloat](worldMat.addr))
-  glUniform2f(rectWorldLoc, worldMat.ax, worldMat.by);
-  glDrawElements(GL_TRIANGLE_FAN, rectIndices.len.GLsizei, GL_UNSIGNED_SHORT, rectIndices.addr)
+  glUniform2f(rectWorldLoc, worldMat.ax, worldMat.by)
+
+  # decide how to draw
+  var mode: GLenum
+  case style:
+    of Outline: mode = GL_LINE_LOOP
+    of Fill: mode = GL_TRIANGLE_FAN
+
+  # Draw it!
+  glDrawElements(mode, rectIndices.len.GLsizei, GL_UNSIGNED_SHORT, rectIndices.addr)
 
   glBindVertexArray(0);
   glUseProgram(0)
