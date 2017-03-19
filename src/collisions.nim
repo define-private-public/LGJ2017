@@ -22,9 +22,6 @@ proc collidesWith*(a, b: Circle): CollisionType =
       return Contains
     else:
       return ContainedBy
-  elif d == 0:
-    # TODO fixup, thise case, it's wrong somehow
-    return None
   else:
     return Intersects
 
