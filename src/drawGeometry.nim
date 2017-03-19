@@ -172,37 +172,34 @@ var
 proc loadCircle(): bool =
   # Create the vertex Data
   # Center point
-  circleVertices.add(0)
-  circleVertices.add(0)
-  circleIndices.add(0)
-
-  circleVertices.add(1)
-  circleVertices.add(0)
-  circleIndices.add(1)
-
-  circleVertices.add(0)
-  circleVertices.add(1)
-  circleIndices.add(2)
-
-  circleVertices.add(-1)
-  circleVertices.add(0)
-  circleIndices.add(3)
-
-  circleVertices.add(0)
-  circleVertices.add(-1)
-  circleIndices.add(4)
+#  circleVertices.add(0)
+#  circleVertices.add(0)
+#  circleIndices.add(0)
+#
+#  circleVertices.add(1)
+#  circleVertices.add(0)
+#  circleIndices.add(1)
+#
+#  circleVertices.add(0)
+#  circleVertices.add(1)
+#  circleIndices.add(2)
+#
+#  circleVertices.add(-1)
+#  circleVertices.add(0)
+#  circleIndices.add(3)
+#
+#  circleVertices.add(0)
+#  circleVertices.add(-1)
+#  circleIndices.add(4)
 
 
   # The radius
-#  const resolution = 8
-#  for i in 0..resolution:
-#    let theta = map(i.float, 0.float, resolution.float, 0.float, PI)
-#    circleVertices.add(cos(theta))
-#    circleVertices.add(sin(theta))
-#    circleIndices.add((i + 1).GLushort)
-
-  echo circleVertices
-  echo circleIndices
+  const resolution = 32
+  for i in 0..resolution:
+    let theta = map(i.float, 0.float, resolution.float, 0.float, TAU)
+    circleVertices.add(cos(theta))
+    circleVertices.add(sin(theta))
+    circleIndices.add((i + 1).GLushort)
 
   # Create a vbo
   glGenBuffers(1, circleVBO.addr)
@@ -250,10 +247,19 @@ proc draw*(
   glBindVertexArray(circleVAO);
 
   # decide how to draw
-  var mode: GLenum
+  var
+    mode: GLenum
+    startIndex: int
+    numToDraw = len(circleIndices)
+
   case style:
-    of Outline: mode = GL_LINE_LOOP
-    of Fill: mode = GL_TRIANGLE_FAN
+    of Outline:
+      mode = GL_LINE_LOOP
+      startIndex = 1
+
+    of Fill:
+      mode = GL_TRIANGLE_FAN
+      startIndex = 0
 
   # The color to draw
   let drawClr = clr.toGLSLVec4()
@@ -267,7 +273,7 @@ proc draw*(
   glUniform4f(circleDrawColorLoc, drawClr.r, drawClr.g, drawClr.b, drawClr.a)
 
   # Draw it!
-  glDrawElements(mode, len(circleIndices).GLsizei, GL_UNSIGNED_SHORT, circleIndices[0].unsafeAddr)
+  glDrawElements(mode, numToDraw.GLSizei, GL_UNSIGNED_SHORT, circleIndices[startIndex].unsafeAddr)
 
   glBindVertexArray(0);
   glUseProgram(0)

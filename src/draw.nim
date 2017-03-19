@@ -24,7 +24,7 @@ proc draw*(app: App, da: DrawArguments) =
 
   # TODO, delet dis l8er
   r.draw()
-  c.draw(colGreen, Fill)
+  c.draw(colGreen, Outline)
 
   sdl.glSwapWindow(app.window)
 
