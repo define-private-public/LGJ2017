@@ -2,8 +2,8 @@
 # Meant to be included by `game.nim`
 
 include arena
-include ball
 include goal
+include ball
 
 var
   arena: Arena

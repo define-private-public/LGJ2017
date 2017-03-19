@@ -17,7 +17,7 @@ proc newGoal*(): Goal =
   var app = getApp()
 
   result = new(Goal)
-  result.bounds = newCircle(point2d(0, 0), app.worldScale * 0.065)
+  result.bounds = newCircle(point2d(0, 0), app.worldScale * 0.15)
 
   
 
