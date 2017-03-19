@@ -7,6 +7,8 @@ proc load() =
   var app = getApp()
   
   arena = newArena()
+  ball = newBall()
+  goal = newGoal()
 
 
 

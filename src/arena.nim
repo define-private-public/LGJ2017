@@ -13,8 +13,8 @@ import drawArguments
 type
   Arena* = ref ArenaObj
   ArenaObj = object of RootObj
-    rimOutter: Circle
-    rimInner: Circle
+    rimOutter*: Circle
+    rimInner*: Circle
 
 
 

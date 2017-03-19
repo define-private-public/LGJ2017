@@ -21,6 +21,8 @@ proc draw*(app: App, da: DrawArguments) =
 
   
   arena.draw(app, da)
+  goal.draw(app, da)
+  ball.draw(app, da)
   
 
   sdl.glSwapWindow(app.window)

@@ -26,4 +26,7 @@ proc update*(app: App, ua: UpdateArguments) =
         app.running = false
 
   arena.update(app, ua)
+  goal.update(app, ua)
+  ball.update(app, ua)
+
       
