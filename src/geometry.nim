@@ -53,7 +53,7 @@ method `$`*(self: Rect): string =
   result &= "\n  center=" & $self.center
   result &= "\n  width=" & $self.width
   result &= "\n  height=" & $self.height
-  result &= "\n  angle=" & $self.radius # TODO put it in degrees (and add unit)
+  result &= "\n  angle=" & $self.angle # TODO put it in degrees (and add unit)
 
 
 # Create a new Circle.

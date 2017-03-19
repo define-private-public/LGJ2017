@@ -1,6 +1,6 @@
 # App data structure and basic logic
 #
-# This is meant to be included by `game.nim`
+# This is meant to be a singleton
 
 import sdl2/sdl
 
@@ -10,15 +10,36 @@ type
     window*: sdl.Window     # SDL Window ponter
     glCtx*: sdl.GLContext   # OpenGL Context
     running*: bool          # Is the app running?
-    screenWidth: int        # Width of the screen in pixels
-    screenHeight: int       # Height of the screen in pixels
 
+    screenWidth*: int       # Width of the screen in pixels
+    screenHeight*: int      # Height of the screen in pixels
+
+    worldScale*: float
+
+
+# the single instance
+var instance: App
 
 
 # Make a new app object
 proc newApp*(): App =
+  assert(instance == nil)
+
   result = App()
   result.screenWidth = 960
   result.screenHeight = 540
   result.running = false
+
+  result.worldScale = 10
+
+  # Set the singleton
+  instance = result
+
+
+proc getApp*(): App =
+  return instance
+
+
+
+
 

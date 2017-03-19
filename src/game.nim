@@ -9,6 +9,7 @@ import
   sdl2/sdl_mixer as mixer
 import opengl
 import geometry
+import drawGeometry
 
 
 # TODO temporary data, remove when drawing tests are done
@@ -17,7 +18,7 @@ var
   r: geometry.Rect
 
 
-include app
+import app
 include init
 include update
 include draw
@@ -123,6 +124,7 @@ proc shutdownSDL(app: App) =
 
 proc load() =
   echo "Loading!"
+  drawGeometry.load()
 
   c = newCircle(point2D(0.5, 0.5), 0.5)
   r = newRect(point2D(0, 0), 0.25, 1.5)
@@ -130,6 +132,7 @@ proc load() =
 
 proc unload() =
   echo "Unloading!"
+  drawGeometry.unload()
 
 
 

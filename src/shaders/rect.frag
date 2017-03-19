@@ -1,6 +1,8 @@
-#version 400
+#version 300 es
 
-int vec4 color;
+precision mediump float;
+
+in vec4 color;
 out vec4 fragColor;
 
 

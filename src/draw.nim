@@ -22,6 +22,7 @@ proc draw*(app: App, da: DrawArguments) =
   glClear(GL_ColorBufferBit or GL_DepthBufferBit)
 
   # TODO, delete dis
+  r.draw()
 
   sdl.glSwapWindow(app.window)
 
