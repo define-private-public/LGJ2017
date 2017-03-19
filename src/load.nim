@@ -5,9 +5,9 @@ proc load() =
   drawGeometry.load()
 
   var app = getApp()
+  
+  arena = newArena()
 
-  rimOutter = newCircle(point2D(0, 0), app.worldScale - 1)
-  rimInner = newCircle(point2D(0, 0), app.worldScale - 1.25)
 
 
 proc unload() =

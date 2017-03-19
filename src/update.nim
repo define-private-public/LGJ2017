@@ -5,12 +5,7 @@
 import sdl2/sdl
 
 import app
-
-type
-  UpdateArguments* = object
-    frameNumber*: int  # Which number frame this is
-    deltaTime*: float  # Time (in seconds) since last frame
-    totalTime*: float  # Time (in seconds) since the game has started
+import updateArguments
 
 
 #proc update(app: App, ua: UpdateArguments)    # Update function
@@ -29,4 +24,6 @@ proc update*(app: App, ua: UpdateArguments) =
       if sym == sdl.K_Escape:
         # ESC Press
         app.running = false
+
+  arena.update(app, ua)
       

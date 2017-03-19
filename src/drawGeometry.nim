@@ -275,7 +275,6 @@ proc load*() =
   var app =  getApp()
   worldMat.ax = app.screenHeight.float / app.screenWidth.float / app.worldScale
   worldMat.by = 1.0 / app.worldScale
-  echo worldMat
 
 
 # Cleanup resources

@@ -13,11 +13,8 @@ import opengl
 import geometry
 import drawGeometry
 
-
-include data
-
-
 import app
+include data
 include init
 include update
 include draw

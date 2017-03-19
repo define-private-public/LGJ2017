@@ -11,12 +11,7 @@ import app
 import geometry
 import drawGeometry
 import collisions
-
-
-type
-  DrawArguments* = object
-    deltaTime*: float  # Time (in seconds) since last frame
-    totalTime*: float  # Time (in seconds) since the game has started
+import drawArguments
 
 #proc draw(app: App, da: DrawArguments)        # Render function
 
@@ -24,8 +19,9 @@ type
 proc draw*(app: App, da: DrawArguments) =
   glClear(GL_ColorBufferBit or GL_DepthBufferBit)
 
-  rimOutter.draw(colWhite, Fill)
-  rimInner.draw(colBlack, Fill)
+  
+  arena.draw(app, da)
+  
 
   sdl.glSwapWindow(app.window)
 
