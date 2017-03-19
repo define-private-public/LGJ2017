@@ -6,8 +6,7 @@ uniform vec2 world;
 
 // Rectangle data
 uniform vec2 center;
-uniform float width;
-uniform float height;
+uniform float radius;
 
 // Drawing data
 uniform vec4 drawColor;
@@ -18,7 +17,7 @@ in vec2 vertex;
 out vec4 color;
 
 void main() {
-  vec2 pos = vec2(vertex.x * width, vertex.y * height);
+  vec2 pos = vertex * radius;
   pos += center;
 
   gl_Position = vec4(world * pos, 0, 1);

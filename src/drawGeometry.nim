@@ -1,9 +1,11 @@
 # Methods for drawing some geometric shapes in OpenGL
 
+import math
 import basic2d
 import colors
 import geometry
 import opengl
+import util
 import app
 import opengl_helpers
 import drawingMechanics
@@ -15,6 +17,10 @@ var
   worldMat = IDMATRIX
 
 
+
+# ==============
+# Rectangle Crap
+# ==============
 let 
   rectVertexShaderSrc = readFile("shaders/rect.vert")
   rectFragmentShaderSrc = readFile("shaders/rect.frag")
@@ -87,24 +93,7 @@ proc unloadRect() =
   glDeleteVertexArrays(1, rectVAO.addr)
 
 
-# Create a shaders & opengl programs for the geometry
-proc load*() =
-  assert(loadRect())
-
-  # Set the world matrix
-  var app =  getApp()
-  worldMat.ax = app.screenHeight.float / app.screenWidth.float / app.worldScale
-  worldMat.by = 1.0 / app.worldScale
-  echo worldMat
-
-
-# Cleanup resources
-proc unload*() =
-  unloadRect()
-
-
 # Draws a rectangle
-# TODO add fill/line option, and color
 proc draw*(
   rect: Rect;
   clr: Color = colWhite;
@@ -136,3 +125,170 @@ proc draw*(
 
   glBindVertexArray(0);
   glUseProgram(0)
+
+
+
+
+
+
+# ===========
+# Circle Crap
+# ===========
+let 
+  circleVertexShaderSrc = readFile("shaders/circle.vert")
+  circleFragmentShaderSrc = readFile("shaders/circle.frag")
+
+var
+  # Rectangle vertices
+  circleVertices = newSeq[GLfloat]()
+#  circleVertices: array[8, Glfloat] = [
+#    -1'f32,  1'f32, 
+#    -1'f32, -1'f32, 
+#     1'f32, -1'f32, 
+#     1'f32,  1'f32 
+#  ]
+  circleIndices = newSeq[GLushort]()
+
+#  # Rectangle indeices (Triangle Fan order)
+#  circleIndices: array[4, GLushort] = [
+#    0'u16, 1'u16, 2'u16, 3'u16
+#  ]
+
+  # Rect stuff
+  circleVBO: GLuint
+  circleVAO: GLuint
+  circleVertexShader: GLuint
+  circleFragmentShader: GLuint
+  circleShaderProgram: GLuint
+
+  # Shader locations
+  circleWorldLoc: GLint
+  circleDrawColorLoc: GLint
+  circleCenterLoc: GLint
+  circleRadiusLoc: GLint
+
+
+# Setup the OpenGL stuff for Circleangle rendering
+proc loadCircle(): bool =
+  # Create the vertex Data
+  # Center point
+  circleVertices.add(0)
+  circleVertices.add(0)
+  circleIndices.add(0)
+
+  circleVertices.add(1)
+  circleVertices.add(0)
+  circleIndices.add(1)
+
+  circleVertices.add(0)
+  circleVertices.add(1)
+  circleIndices.add(2)
+
+  circleVertices.add(-1)
+  circleVertices.add(0)
+  circleIndices.add(3)
+
+  circleVertices.add(0)
+  circleVertices.add(-1)
+  circleIndices.add(4)
+
+
+  # The radius
+#  const resolution = 8
+#  for i in 0..resolution:
+#    let theta = map(i.float, 0.float, resolution.float, 0.float, PI)
+#    circleVertices.add(cos(theta))
+#    circleVertices.add(sin(theta))
+#    circleIndices.add((i + 1).GLushort)
+
+  echo circleVertices
+  echo circleIndices
+
+  # Create a vbo
+  glGenBuffers(1, circleVBO.addr)
+  glBindBuffer(GL_ARRAY_BUFFER, circleVBO)
+  glBufferData(GL_ARRAY_BUFFER, 2 * len(circleVertices) * circleIndices[0].sizeof, circleVertices[0].unsafeAddr, GL_STATIC_DRAW)
+
+  # The array object
+  glGenVertexArrays(1, circleVAO.addr)
+  glBindVertexArray(circleVAO)
+  glBindBuffer(GL_ARRAY_BUFFER, circleVBO)
+  glVertexAttribPointer(0, 2, cGL_FLOAT, GL_FALSE, 0, nil)
+  glEnableVertexAttribArray(0)
+
+  # Create the shaders & program
+  circleVertexShader = makeShader(GL_VERTEX_SHADER, circleVertexShaderSrc)
+  circleFragmentShader = makeShader(GL_FRAGMENT_SHADER, circleFragmentShaderSrc)
+  circleShaderProgram = makeProgram(circleVertexShader, circleFragmentShader)
+
+  # Get the world matrix location
+  glUseProgram(circleShaderProgram)
+  circleWorldLoc = glGetUniformLocation(circleShaderProgram, "world");
+  circleDrawColorLoc = glGetUniformLocation(circleShaderProgram, "drawColor");
+  circleCenterLoc = glGetUniformLocation(circleShaderProgram, "center");
+  circleRadiusLoc = glGetUniformLocation(circleShaderProgram, "radius");
+  glUseProgram(0)
+
+  return (circleVertexShader != 0) and (circleFragmentshader != 0) and (circleShaderProgram != 0)
+
+
+proc unloadCircle() =
+  glDeleteProgram(circleShaderProgram)
+  glDeleteShader(circleVertexShader)
+  glDeleteShader(circleFragmentShader)
+  glDeleteBuffers(1, circleVBO.addr)
+  glDeleteVertexArrays(1, circleVAO.addr)
+
+
+# Draws a circleangle
+proc draw*(
+  circle: Circle;
+  clr: Color = colWhite;
+  style: DrawingStyle = Outline
+) =
+  glUseProgram(circleShaderProgram)
+  glBindVertexArray(circleVAO);
+
+  # decide how to draw
+  var mode: GLenum
+  case style:
+    of Outline: mode = GL_LINE_LOOP
+    of Fill: mode = GL_TRIANGLE_FAN
+
+  # The color to draw
+  let drawClr = clr.toGLSLVec4()
+
+  # Send data to the shader
+  # TODO, use proer matrix sending
+#  glUniformMatrix2fv(circleWorldLoc, 1.GLsizei, GL_FALSE, cast[ptr GLfloat](worldMat.addr))
+  glUniform2f(circleWorldLoc, worldMat.ax, worldMat.by)
+  glUniform2f(circleCenterLoc, circle.center.x, circle.center.y)
+  glUniform1f(circleRadiusLoc, circle.radius)
+  glUniform4f(circleDrawColorLoc, drawClr.r, drawClr.g, drawClr.b, drawClr.a)
+
+  # Draw it!
+  glDrawElements(mode, len(circleIndices).GLsizei, GL_UNSIGNED_SHORT, circleIndices[0].unsafeAddr)
+
+  glBindVertexArray(0);
+  glUseProgram(0)
+
+
+
+
+
+# Create a shaders & opengl programs for the geometry
+proc load*() =
+  assert(loadRect())
+  assert(loadCircle())
+
+  # Set the world matrix
+  var app =  getApp()
+  worldMat.ax = app.screenHeight.float / app.screenWidth.float / app.worldScale
+  worldMat.by = 1.0 / app.worldScale
+  echo worldMat
+
+
+# Cleanup resources
+proc unload*() =
+  unloadRect()
+  unloadCircle()
