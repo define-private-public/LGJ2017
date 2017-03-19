@@ -24,9 +24,8 @@ type
 proc draw*(app: App, da: DrawArguments) =
   glClear(GL_ColorBufferBit or GL_DepthBufferBit)
 
-  # TODO, delet dis l8er
-  c1.draw(colOrange, Fill)
-  c2.draw()
+  rimOutter.draw(colWhite, Fill)
+  rimInner.draw(colBlack, Fill)
 
   sdl.glSwapWindow(app.window)
 

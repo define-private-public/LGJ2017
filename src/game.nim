@@ -14,10 +14,7 @@ import geometry
 import drawGeometry
 
 
-# TODO temporary data, remove when drawing tests are done
-var
-  c1: Circle
-  c2: Circle
+include data
 
 
 import app
@@ -135,18 +132,8 @@ proc shutdownSDL(app: App) =
   sdl.quit()
 
 
-proc load() =
-  echo "Loading!"
-  drawGeometry.load()
-
-  c1 = newCircle(point2D(-5, -5), 1)
-  c2 = newCircle(point2D(5, 2), 3.1)
-
-
-proc unload() =
-  echo "Unloading!"
-  drawGeometry.unload()
-
+# Procs for load & unload
+include load
 
 
 proc main() =
