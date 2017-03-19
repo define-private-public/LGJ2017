@@ -35,14 +35,14 @@ proc update*(
   # Update ball position
   self.pos += self.vel * ua.deltaTime
 
-  # Update bounds locations
-  self.bounds.center = self.pos
-
 
 proc draw*(
   self: Ball;
   app: App;
   da: DrawArguments
 ) =
+  # Update bounds locations
+  self.bounds.center = self.pos
+
   self.bounds.draw(colWhite, Fill)
 
