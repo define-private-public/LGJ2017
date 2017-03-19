@@ -31,14 +31,14 @@ proc update*(app: App, ua: UpdateArguments) =
         app.running = false
 
       if sym == sdl.K_Up:
-        r.center.y += 0.1
+        c2.center.y += 0.1
 
       if sym == sdl.K_Down:
-        r.center.y -= 0.1
+        c2.center.y -= 0.1
 
       if sym == sdl.K_Left:
-        r.center.x -= 0.1
+        c2.center.x -= 0.1
 
       if sym == sdl.K_Right:
-        r.center.x += 0.1
+        c2.center.x += 0.1
       

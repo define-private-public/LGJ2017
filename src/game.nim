@@ -1,3 +1,5 @@
+
+
 # Main runner for the game
 
 import strfmt
@@ -14,7 +16,8 @@ import drawGeometry
 
 # TODO temporary data, remove when drawing tests are done
 var
-  c: Circle
+  c1: Circle
+  c2: Circle
   r: geometry.Rect
 
 
@@ -130,8 +133,9 @@ proc load() =
   echo "Loading!"
   drawGeometry.load()
 
-  c = newCircle(point2D(0, 0), 2)
-  r = newRect(point2D(2, 2), 0.75, 2.5)
+  c1 = newCircle(point2D(0, 0), 3)
+  c2 = newCircle(point2D(5, 2), 3.1)
+  r = newRect(point2D(-4, -4), 0.75, 1.5)
 
 
 proc unload() =
