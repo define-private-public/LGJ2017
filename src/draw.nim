@@ -25,17 +25,19 @@ proc draw*(app: App, da: DrawArguments) =
   glClear(GL_ColorBufferBit or GL_DepthBufferBit)
 
   # TODO, delet dis l8er
-  c1.draw(colOrange)
-  c2.draw()
+#  c1.draw(colOrange)
+#  c2.draw()
+  r1.draw(colOrange)
+  r2.draw()
 
-  let c = c2.collidesWith(c1) 
+  let c = r2.collidesWith(r1) 
   case c:
     of Intersects:
-      r.draw(colRed, Fill)
+      c1.draw(colRed, Fill)
     of Contains:
-      r.draw(colGreen, Fill)
+      c1.draw(colGreen, Fill)
     of ContainedBy:
-      r.draw(colBlue, Fill)
+      c1.draw(colBlue, Fill)
     else: discard
 
   sdl.glSwapWindow(app.window)

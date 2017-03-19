@@ -25,3 +25,8 @@ proc collidesWith*(a, b: Circle): CollisionType =
   else:
     return Intersects
 
+
+# Rectangle -> Rectangle collisions
+proc collidesWith*(a, b: Rect): CollisionType =
+  return None
+

@@ -18,7 +18,8 @@ import drawGeometry
 var
   c1: Circle
   c2: Circle
-  r: geometry.Rect
+  r1: geometry.Rect
+  r2: geometry.Rect
 
 
 import app
@@ -133,9 +134,10 @@ proc load() =
   echo "Loading!"
   drawGeometry.load()
 
-  c1 = newCircle(point2D(0, 0), 3)
+  c1 = newCircle(point2D(-5, -5), 1)
   c2 = newCircle(point2D(5, 2), 3.1)
-  r = newRect(point2D(-4, -4), 0.75, 1.5)
+  r1 = newRect(point2D(0, 0), 2.5, 1.5)
+  r2 = newRect(point2D(-4, -4), 1, 0.9)
 
 
 proc unload() =
