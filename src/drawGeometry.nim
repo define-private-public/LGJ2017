@@ -172,26 +172,9 @@ var
 proc loadCircle(): bool =
   # Create the vertex Data
   # Center point
-#  circleVertices.add(0)
-#  circleVertices.add(0)
-#  circleIndices.add(0)
-#
-#  circleVertices.add(1)
-#  circleVertices.add(0)
-#  circleIndices.add(1)
-#
-#  circleVertices.add(0)
-#  circleVertices.add(1)
-#  circleIndices.add(2)
-#
-#  circleVertices.add(-1)
-#  circleVertices.add(0)
-#  circleIndices.add(3)
-#
-#  circleVertices.add(0)
-#  circleVertices.add(-1)
-#  circleIndices.add(4)
-
+  circleVertices.add(0)
+  circleVertices.add(0)
+  circleIndices.add(0)
 
   # The radius
   const resolution = 32
@@ -204,7 +187,7 @@ proc loadCircle(): bool =
   # Create a vbo
   glGenBuffers(1, circleVBO.addr)
   glBindBuffer(GL_ARRAY_BUFFER, circleVBO)
-  glBufferData(GL_ARRAY_BUFFER, 2 * len(circleVertices) * circleIndices[0].sizeof, circleVertices[0].unsafeAddr, GL_STATIC_DRAW)
+  glBufferData(GL_ARRAY_BUFFER, len(circleVertices) * GLfloat.sizeof, circleVertices[0].unsafeAddr, GL_STATIC_DRAW)
 
   # The array object
   glGenVertexArrays(1, circleVAO.addr)
@@ -256,6 +239,7 @@ proc draw*(
     of Outline:
       mode = GL_LINE_LOOP
       startIndex = 1
+      numtoDraw -= 1
 
     of Fill:
       mode = GL_TRIANGLE_FAN

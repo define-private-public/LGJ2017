@@ -26,7 +26,22 @@ proc collidesWith*(a, b: Circle): CollisionType =
     return Intersects
 
 
-# Rectangle -> Rectangle collisions
-proc collidesWith*(a, b: Rect): CollisionType =
-  return None
+## Rectangle -> Rectangle collisions
+#proc collidesWith*(a, b: Rect): CollisionType =
+#  # Check for containment first
+#  let
+#    containsleft = left(b) <= left(a)
+#    containsRight = right(b) <= right(a)
+#    containsTop = top(b) <= top(a)
+#    containsBottom = bottom(b) <= bottom(a)
+#
+#  if containsLeft and containsRight and containsTop and containsBottom:
+#    return Contains
+#
+##  if insideLeft:
+##    echo right(a)
+##    echo left(b)
+##    return Intersects
+#
+#  return None
 

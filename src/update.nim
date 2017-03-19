@@ -29,16 +29,4 @@ proc update*(app: App, ua: UpdateArguments) =
       if sym == sdl.K_Escape:
         # ESC Press
         app.running = false
-
-      if sym == sdl.K_Up:
-        r2.center.y += 0.1
-
-      if sym == sdl.K_Down:
-        r2.center.y -= 0.1
-
-      if sym == sdl.K_Left:
-        r2.center.x -= 0.1
-
-      if sym == sdl.K_Right:
-        r2.center.x += 0.1
       
