@@ -26,8 +26,8 @@ proc newApp*(): App =
   assert(instance == nil)
 
   result = App()
-  result.screenWidth = 960
-  result.screenHeight = 540
+  result.screenWidth = 800
+  result.screenHeight = 800
   result.running = false
 
   result.worldScale = 10
