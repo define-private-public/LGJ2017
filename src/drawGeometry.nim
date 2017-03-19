@@ -1,6 +1,7 @@
 # Methods for drawing some geometric shapes in OpenGL
 
 import basic2d
+import colors
 import geometry
 import opengl
 import app
@@ -39,6 +40,7 @@ var
   rectFragmentShader: GLuint
   rectShaderProgram: GLuint
   rectWorldLoc: GLint
+  rectDrawColorLoc: GLint
 
 
 # Setup the OpenGL stuff for Rectangle rendering
@@ -63,6 +65,7 @@ proc loadRect(): bool =
   # Get the world matrix location
   glUseProgram(rectShaderProgram)
   rectWorldLoc = glGetUniformLocation(rectShaderProgram, "world");
+  rectDrawColorLoc = glGetUniformLocation(rectShaderProgram, "drawColor");
   glUseProgram(0)
 
   return (rectVertexShader != 0) and (rectFragmentshader != 0) and (rectShaderProgram != 0)
@@ -94,20 +97,28 @@ proc unload*() =
 
 # Draws a rectangle
 # TODO add fill/line option, and color
-proc draw*(rect: Rect; style: DrawingStyle = Outline) =
+proc draw*(
+  rect: Rect;
+  clr: Color = colWhite;
+  style: DrawingStyle = Outline
+) =
   glUseProgram(rectShaderProgram)
   glBindVertexArray(rectVAO);
-
-  # Send data to the shader
-  # TODO, use proer matrix sending
-#  glUniformMatrix2fv(rectWorldLoc, 1.GLsizei, GL_FALSE, cast[ptr GLfloat](worldMat.addr))
-  glUniform2f(rectWorldLoc, worldMat.ax, worldMat.by)
 
   # decide how to draw
   var mode: GLenum
   case style:
     of Outline: mode = GL_LINE_LOOP
     of Fill: mode = GL_TRIANGLE_FAN
+
+  # The color to draw
+  let drawClr = clr.toGLSLVec4()
+
+  # Send data to the shader
+  # TODO, use proer matrix sending
+#  glUniformMatrix2fv(rectWorldLoc, 1.GLsizei, GL_FALSE, cast[ptr GLfloat](worldMat.addr))
+  glUniform2f(rectWorldLoc, worldMat.ax, worldMat.by)
+  glUniform4f(rectDrawColorLoc, drawClr.r, drawClr.g, drawClr.b, drawClr.a)
 
   # Draw it!
   glDrawElements(mode, rectIndices.len.GLsizei, GL_UNSIGNED_SHORT, rectIndices.addr)

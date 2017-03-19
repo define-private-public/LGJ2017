@@ -2,11 +2,12 @@
 #
 # This is meant to be inclued by `game.nim`
 
+import colors
+
 import sdl2/sdl
 import opengl
 
 import app
-
 import geometry
 import drawGeometry
 
@@ -22,7 +23,7 @@ proc draw*(app: App, da: DrawArguments) =
   glClear(GL_ColorBufferBit or GL_DepthBufferBit)
 
   # TODO, delete dis
-  r.draw(Fill)
+  r.draw(colDarkSlateBlue, Fill)
 
   sdl.glSwapWindow(app.window)
 

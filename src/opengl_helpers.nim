@@ -1,5 +1,7 @@
 # A bunch of code for writing OpenGL shader stuff much easily
+import colors
 import opengl
+import util
 
 
 proc `$`*(shaderType: GLenum): string=
@@ -93,3 +95,17 @@ proc makeProgram*(vertexShader, fragmentShader: GLuint): GLuint=
     programID = 0
 
   return programID
+
+
+# Convert a color into a GLSL friendly color
+# TODO this needs to handle alpha in a better manor
+proc toGLSLVec4*(clr: Color): tuple[r, g, b, a: float] =
+  let
+    comp = extractRGB(clr)
+    r = map(comp.r.float, 0.0, 255.0, 0.0, 1.0)
+    g = map(comp.g.float, 0.0, 255.0, 0.0, 1.0)
+    b = map(comp.b.float, 0.0, 255.0, 0.0, 1.0)
+    a = 1.0
+  
+  return (r, g, b, a)
+

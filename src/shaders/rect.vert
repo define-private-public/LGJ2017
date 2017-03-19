@@ -5,11 +5,13 @@
 //uniform mat2 world;
 uniform vec2 world;
 
+uniform vec4 drawColor;
+
 in vec2 pos;
 out vec4 color;
 
 void main() {
   gl_Position = vec4(world * pos, 0, 1);
-  color = vec4(0, 0, 1, 1);
+  color = drawColor;
 }
 
