@@ -56,6 +56,23 @@ method `$`*(self: Rect): string =
   result &= "\n  angle=" & $self.angle # TODO put it in degrees (and add unit)
 
 
+# Get the left most value of the shape
+method left*(self: Shape2D): float {.base.} =
+  raise newException(Exception, "Not implemented")
+
+# Get the rightmost
+method right*(self: Shape2D): float {.base.} =
+  raise newException(Exception, "Not implemented")
+
+#Get the topmost
+method top*(self: Shape2D): float {.base.} =
+  raise newException(Exception, "Not implemented")
+
+# Get the bottommost
+method bottom*(self: Shape2D): float {.base.} =
+  raise newException(Exception, "Not implemented")
+
+
 # Create a new Circle.
 # c -- center point of the circle
 # r -- radious of the circle, should be non-negative
@@ -89,4 +106,44 @@ proc newRect*(c: Point2D = Point2D(); w, h: float = 0): Rect =
 
 # TODO AABB of objects
 
+# Get the left most value of the shape
+method left*(self: Circle): float =
+  return self.center.x - self.radius
+
+
+# Get the rightmost
+method right*(self: Circle): float =
+  return self.center.x + self.radius
+
+
+#Get the topmost
+method top*(self: Circle): float =
+  return self.center.y + self.radius
+
+
+# Get the bottommost
+method bottom*(self: Circle): float =
+  return self.center.y - self.radius
+
+
+
+
+# Get the left most value of the shape
+method left*(self: Rect): float =
+  return self.center.x - (self.width / 2)
+
+
+# Get the rightmost
+method right*(self: Rect): float =
+  return self.center.x + (self.width / 2)
+
+
+#Get the topmost
+method top*(self: Rect): float =
+  return self.center.y + (self.height / 2)
+
+
+# Get the bottommost
+method bottom*(self: Rect): float =
+  return self.center.y - (self.height / 2)
 
