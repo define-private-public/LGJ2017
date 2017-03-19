@@ -130,8 +130,8 @@ proc load() =
   echo "Loading!"
   drawGeometry.load()
 
-  c = newCircle(point2D(0.5, 0.5), 4)
-  r = newRect(point2D(2, 2), 0.25, 2.5)
+  c = newCircle(point2D(0, 0), 2)
+  r = newRect(point2D(2, 2), 0.75, 2.5)
 
 
 proc unload() =
