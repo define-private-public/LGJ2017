@@ -28,6 +28,8 @@ proc update*(app: App, ua: UpdateArguments) =
 
   arena.update(app, ua)
   goal.update(app, ua)
+  innerShield.update(app, ua)
+  outterShield.update(app, ua)
   ball.update(app, ua)
 
   # Check for collisons

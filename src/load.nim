@@ -9,6 +9,8 @@ proc load() =
   arena = newArena()
   ball = newBall()
   goal = newGoal()
+  innerShield = newShield(2)
+  outterShield = newShield(4)
 
 
 

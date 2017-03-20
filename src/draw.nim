@@ -22,6 +22,8 @@ proc draw*(app: App, da: DrawArguments) =
   
   arena.draw(app, da)
   goal.draw(app, da)
+  innerShield.draw(app, da)
+  outterShield.draw(app, da)
   ball.draw(app, da)
   
 

@@ -59,7 +59,7 @@ proc onHitsArenaRim*(
   n.normalize()
 
   # Reverse the velocity, with a tiny increas
-  self.vel = (reflect(self.vel, n) * 1.05)
+  self.vel = reflect(self.vel, n)
 
   # Get the polar stuff
   var
@@ -67,8 +67,12 @@ proc onHitsArenaRim*(
     mag = self.vel.len()
 
   # Alter the angle and magnatude
-  rad += degToRad(random(-22.5, 22.5))
+  rad += degToRad(random(-15, 15))
   mag += 0.15
+
+  # Cap the magnitude 
+  if mag > 20:
+    mag = 20
 
   self.vel = polarVector2d(rad, mag)
 
@@ -81,5 +85,5 @@ proc onInsideGoal*(
   self: Ball;
   goal: Goal
 ) =
-  echo "GOAL"
   discard
+
