@@ -11,6 +11,9 @@ import updateArguments
 import drawArguments
 import collisions
 
+const
+  minRimBouncesTillReset = 4
+  maxRimBouncesTillReset = 12
 
 type
   Ball* = ref BallObj
@@ -18,7 +21,11 @@ type
     bounds*: Circle
     pos: Point2d      # position
     vel: Vector2d     # velocity
-    bounceNoises: seq[mixer.Chunk]    # Bounce noises
+    bounceNoises: seq[mixer.Chunk]    # Bounce noises   # TODO these need to be cleaned up!
+
+    # For reset the direction of velocity after there have been X bounces off of the rim
+    numRimBounes: int       # Since the start of the sequence
+    rimBouncesNeeded: int   # Num needed for the lap
 
 
 
@@ -35,7 +42,9 @@ proc newBall*(): Ball =
   result.bounceNoises = @[]
   for kind, path in walkDir("sounds/bounce/"):
     result.bounceNoises.add(mixer.loadWAV(path))
-  
+ 
+  result.numRimBounes = 0
+  result.rimBouncesNeeded = random(minRimBouncesTillReset, maxRimBouncesTillReset).int
 
 
 proc update*(
@@ -61,8 +70,22 @@ proc draw*(
 # Will bounce the ball about the normal
 # Will increase the speed
 proc bounce(self: Ball; n: Vector2D) =
-  # Reverse the velocity, with a tiny increas
-  self.vel = reflect(self.vel, n)
+  # Which way should the ball go?
+  if self.numRimBounes >= self.rimBouncesNeeded:
+    # Reset the rim bounce counter
+    self.numRimBounes = 0
+    self.rimBouncesNeeded = random(minRimBouncesTillReset, maxRimBouncesTillReset).int
+
+    # Send to towards the goal
+    var
+      dir = vector2d(0 - self.pos.x, 0 - self.pos.y)
+      mag = self.vel.len()
+    dir.normalize()
+
+    self.vel = polarVector2d(arctan2(dir.y, dir.x), mag)
+  else:
+    # Normal, Reverse the velocity
+    self.vel = reflect(self.vel, n)
 
   # Get the polar stuff
   var
@@ -92,10 +115,12 @@ proc onHitsArenaRim*(
   self: Ball;
   arena: Arena
 ) =
+  # Increment the rim bounce count
+  self.numRimBounes += 1
+
   # Figure normal at collision
   var n = vector2d(arena.center.x - self.pos.x, arena.center.y - self.pos.y)
   n.normalize()
-
   self.bounce(n)
 
 
@@ -105,13 +130,16 @@ proc onInsideGoal*(
   goal: Goal
 ) =
   # TODO implement game over!
-  discard
+  self.numRimBounes = 0
 
 
 proc onHitsShields*(
   self: Ball;
   shield: Shield
 ) =
+  # We can reset the rim bounce count
+  self.numRimBounes = 0
+
   # Figure out the normal to reflect of off
   # Since we don't really have a proper collision library, we have to do this hacky ass shit:
   #   Compare the radiusLoc vs. the ball's radial position
@@ -127,7 +155,5 @@ proc onHitsShields*(
     n = vector2d(0 + self.pos.x, 0 + self.pos.y)
     
   n.normalize()
-
   self.bounce(n)
-
 

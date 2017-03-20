@@ -48,7 +48,7 @@ proc update*(
   app: App;
   ua: UpdateArguments
 ) =
-  var angleVel = degToRad(180.0)
+  var angleVel = degToRad(215.0)
   let
     moveInner = (ua.moveInnerShieldCCW or ua.moveInnerShieldCW) and (self.kind == Inner)
     moveOutter = (ua.moveOutterShieldCCW or ua.moveOutterShieldCW) and (self.kind == Outter)
