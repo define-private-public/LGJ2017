@@ -85,6 +85,10 @@ proc initSDL(app: App): bool =
     echo sdl.getError()
     return false
 
+  # Enable key repeats
+  # WTF, it's not bound...
+#  sdl.enableKeyRepeat(1, 0)
+
   # Setup OpenGL
   app.glCtx = glCreateContext(app.window)
   if app.glCtx == nil:
@@ -162,6 +166,10 @@ proc main() =
     ua.frameNumber = frameCount
     ua.deltaTime = dt
     ua.totalTime = t
+#    ua.moveOutterShieldCCW = false
+#    ua.moveOutterShieldCW = false
+#    ua.moveInnerShieldCCW = false
+#    ua.moveInnerShieldCW = false
 
     da.deltaTime = dt
     da.totalTime = t

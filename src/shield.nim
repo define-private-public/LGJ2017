@@ -37,13 +37,13 @@ proc newShield*(loc: float): Shield =
     result.bounds.add(newCircle(point2d(x, y), 0.2))
   
 
-
 proc update*(
   self: Shield;
   app: App;
   ua: UpdateArguments
 ) =
   discard
+
 
 proc draw*(
   self: Shield;

@@ -12,7 +12,7 @@ import collisions
 #proc update(app: App, ua: UpdateArguments)    # Update function
 
 
-proc update*(app: App, ua: UpdateArguments) =
+proc update*(app: App; ua: var UpdateArguments) =
   # Poll for events
   var event: sdl.Event
   while sdl.pollEvent(event.addr) != 0:
@@ -22,9 +22,51 @@ proc update*(app: App, ua: UpdateArguments) =
       app.running = false
     elif event.kind == sdl.KeyDown:
       let sym = event.key.keysym.sym
-      if sym == sdl.K_Escape:
-        # ESC Press
-        app.running = false
+      case sym:
+        of sdl.K_Escape:
+          # Quit
+          app.running = false
+
+        # move the shields
+        of sdl.K_Q:
+          # Move outter CCW
+          ua.moveOutterShieldCCW = true
+        of sdl.K_W:
+          # Move outter CW
+          ua.moveOutterShieldCW = true
+        of sdl.K_O:
+          # Move inner CCW
+          ua.moveInnerShieldCCW = true
+        of sdl.K_P:
+          # Move inner CW
+          ua.moveInnerShieldCW = true
+        
+        # Forgot the rest
+        else:
+          discard
+    elif event.kind == sdl.KeyUp:
+      let sym = event.key.keysym.sym
+      case sym:
+
+        # move the shields
+        of sdl.K_Q:
+          # Move outter CCW
+          ua.moveOutterShieldCCW = false
+        of sdl.K_W:
+          # Move outter CW
+          ua.moveOutterShieldCW = false
+        of sdl.K_O:
+          # Move inner CCW
+          ua.moveInnerShieldCCW = false
+        of sdl.K_P:
+          # Move inner CW
+          ua.moveInnerShieldCW = false
+        
+        # Forgot the rest
+        else:
+          discard
+
+
 
   arena.update(app, ua)
   goal.update(app, ua)
