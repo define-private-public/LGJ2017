@@ -13,10 +13,10 @@ import collisions
 
 const
   minRimBouncesTillReset = 4
-  maxRimBouncesTillReset = 12
+  maxRimBouncesTillReset = 8
 
   minSpawnDistance = 7.0
-  maxSpawnDistance = 9.0
+  maxSpawnDistance = 8.0
 
   startVelocityMagnitude = 2.0
 
@@ -63,6 +63,10 @@ proc init*(self: Ball) =
 
   # Set the velcity to 2
   self.vel = polarVector2d(angle, -startVelocityMagnitude)
+
+  # Reset the rim bounces
+  self.numRimBounes = 0
+  self.rimBouncesNeeded = random(minRimBouncesTillReset, maxRimBouncesTillReset).int
 
 
 proc update*(

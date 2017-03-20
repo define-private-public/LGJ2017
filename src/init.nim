@@ -12,5 +12,7 @@ proc init*(app: App) =
   echo "Set intial state."
   app.running = true
 
+  innerShield.init()
+  outterShield.init()
   ball.init()
 

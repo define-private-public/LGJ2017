@@ -10,6 +10,13 @@ import drawArguments
 import collisions
 
 
+const
+  shieldAngularVelocity = 215.0   # In degrees
+  shieldPartSize = 0.2
+  shieldResolution = 64
+  shieldSize = 0.1666666 * TAU
+
+
 type
   Kind* = enum
     Inner, Outter
@@ -19,8 +26,20 @@ type
     kind*: Kind           # Is this the inner or outter shield?
     bounds*: seq[Circle]
     radiusLoc*: float     # How far from the center this shield is located
+    angularCenter*: float # Center of the shield, it's angle in relation to the goal (in radians)
 
 
+# Set the position of a shield part
+# c -- the circle part
+# angle -- which angle (in relation to the goal) it should be placed at, in radians
+proc setShieldPartPos(
+  self: Shield;
+  part: Circle;
+  angle: float 
+) =
+  part.center.x = self.radiusLoc * cos(angle + self.angularCenter - (shieldSize / 2))
+  part.center.y = self.radiusLoc * sin(angle + self.angularCenter - (shieldSize / 2))
+  
 
 
 proc newShield*(loc: float; kind: Kind): Shield =
@@ -30,17 +49,28 @@ proc newShield*(loc: float; kind: Kind): Shield =
   result.kind = kind
   result.bounds = @[]
   result.radiusLoc = loc
+  result.angularCenter = 0.0
 
   # Add the circles
-  const
-    resolution = 64
-    shieldSize = 0.1666666 * TAU
-  for i in 0..<resolution:
-    let
-      theta = map(i.float, 0.float, resolution.float, 0.float, shieldSize)
-      x = result.radiusLoc * cos(theta)
-      y = result.radiusLoc * sin(theta)
-    result.bounds.add(newCircle(point2d(x, y), 0.2))
+  for i in 0..<shieldResolution:
+    let theta = map(i.float, 0.float, shieldResolution.float, 0.float, shieldSize)
+    var c = newCircle(Point2D(), shieldPartSize)
+    result.setShieldPartPos(c, theta)
+    result.bounds.add(c)
+
+
+# init the position of the shield
+proc init*(self: Shield) =
+  # Set the intial position of each part, depending upon if we're the inner or outter shield
+  for i, part in self.bounds:
+    let theta = map(i.float, 0.float, shieldResolution.float, 0.float, shieldSize)
+
+    case self.kind:
+      of Inner:
+        self.setShieldPartPos(part, theta + (3 * PI / 2))
+      of Outter:
+        self.setShieldPartPos(part, theta + (PI / 2))
+        
   
 
 proc update*(
@@ -48,7 +78,7 @@ proc update*(
   app: App;
   ua: UpdateArguments
 ) =
-  var angleVel = degToRad(215.0)
+  var angleVel = degToRad(shieldAngularVelocity)
   let
     moveInner = (ua.moveInnerShieldCCW or ua.moveInnerShieldCW) and (self.kind == Inner)
     moveOutter = (ua.moveOutterShieldCCW or ua.moveOutterShieldCW) and (self.kind == Outter)
