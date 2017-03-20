@@ -1,9 +1,11 @@
 # A ball data structre, it gets bounced around
 
 
+import os
 import math
 import basic2d
 import colors
+import random
 import util
 import updateArguments
 import drawArguments
@@ -16,6 +18,7 @@ type
     bounds*: Circle
     pos: Point2d      # position
     vel: Vector2d     # velocity
+    bounceNoises: seq[mixer.Chunk]    # Bounce noises
 
 
 
@@ -27,6 +30,11 @@ proc newBall*(): Ball =
   result.pos = point2d(1, 1)      # TODO need a spawning point!
 #  result.vel = vector2d(1.5, 1.5)
   result.vel = vector2d(2, 2)
+
+  # Load up the bounce noises
+  result.bounceNoises = @[]
+  for kind, path in walkDir("sounds/bounce/"):
+    result.bounceNoises.add(mixer.loadWAV(path))
   
 
 
@@ -73,7 +81,10 @@ proc bounce(self: Ball; n: Vector2D) =
 
   # Move the ball , should be back in the rim
   self.pos += self.vel * 0.05   # TODO, I don't think that this is a good modifier here...
-  
+ 
+  # Play a bounce noise
+  discard mixer.playChannel(-1, random(self.bounceNoises), 0)
+
 
 
 # What to do when there was a collision with the arena Rim
