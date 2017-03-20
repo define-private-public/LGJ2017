@@ -10,18 +10,23 @@ import drawArguments
 
 
 type
+  Kind* = enum
+    Inner, Outter
+
   Shield* = ref ShieldObj
   ShieldObj = object of RootObj
+    kind*: Kind           # Is this the inner or outter shield?
     bounds*: seq[Circle]
     radiusLoc*: float     # How far from the center this shield is located
 
 
 
 
-proc newShield*(loc: float): Shield =
+proc newShield*(loc: float; kind: Kind): Shield =
   var app = getApp()
 
   result = new(Shield)
+  result.kind = kind
   result.bounds = @[]
   result.radiusLoc = loc
 
@@ -42,7 +47,32 @@ proc update*(
   app: App;
   ua: UpdateArguments
 ) =
-  discard
+  var angleVel = degToRad(180.0)
+  let
+    moveInner = (ua.moveInnerShieldCCW or ua.moveInnerShieldCW) and (self.kind == Inner)
+    moveOutter = (ua.moveOutterShieldCCW or ua.moveOutterShieldCW) and (self.kind == Outter)
+    move = moveInner or moveOutter
+
+  # Move the shields
+  if (self.kind == Inner) and moveInner:
+    # Reverse direction?
+    if ua.moveInnerShieldCW:
+      angleVel *= -1
+  elif (self.kind == Outter) and moveOutter:
+    if ua.moveOutterShieldCW:
+      angleVel *= -1
+
+  
+  # Move at all?
+  if move:
+    # Move each of the bounds
+    for b in self.bounds:
+      # Get the polar stuff
+      var rad = arctan2(b.center.y, b.center.x)
+      rad += angleVel * ua.deltaTime
+  
+      let v = polarVector2d(rad, self.radiusLoc)
+      b.center = point2d(v.x, v.y)
 
 
 proc draw*(
