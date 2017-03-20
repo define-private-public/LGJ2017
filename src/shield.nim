@@ -34,7 +34,7 @@ proc newShield*(loc: float; kind: Kind): Shield =
   # Add the circles
   const
     resolution = 64
-    shieldSize = 0.333333 * TAU
+    shieldSize = 0.1666666 * TAU
   for i in 0..<resolution:
     let
       theta = map(i.float, 0.float, resolution.float, 0.float, shieldSize)

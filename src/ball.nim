@@ -50,15 +50,9 @@ proc draw*(
   self.bounds.draw(colWhite, Fill)
 
 
-# What to do when there was a collision with the arena Rim?
-proc onHitsArenaRim*(
-  self: Ball;
-  arena: Arena
-) =
-  # Figure normal at collision
-  var n = vector2d(arena.center.x - self.pos.x, arena.center.y - self.pos.y)
-  n.normalize()
-
+# Will bounce the ball about the normal
+# Will increase the speed
+proc bounce(self: Ball; n: Vector2D) =
   # Reverse the velocity, with a tiny increas
   self.vel = reflect(self.vel, n)
 
@@ -79,6 +73,19 @@ proc onHitsArenaRim*(
 
   # Move the ball , should be back in the rim
   self.pos += self.vel * 0.05   # TODO, I don't think that this is a good modifier here...
+  
+
+
+# What to do when there was a collision with the arena Rim
+proc onHitsArenaRim*(
+  self: Ball;
+  arena: Arena
+) =
+  # Figure normal at collision
+  var n = vector2d(arena.center.x - self.pos.x, arena.center.y - self.pos.y)
+  n.normalize()
+
+  self.bounce(n)
 
 
 # What to do when the ball is fully contained by the goal
@@ -86,9 +93,30 @@ proc onInsideGoal*(
   self: Ball;
   goal: Goal
 ) =
+  # TODO implement game over!
   discard
 
 
-proc onHitsShields*(self: Ball) =
-  echo "Shield hit!"
+proc onHitsShields*(
+  self: Ball;
+  shield: Shield
+) =
+  # Figure out the normal to reflect of off
+  # Since we don't really have a proper collision library, we have to do this hacky ass shit:
+  #   Compare the radiusLoc vs. the ball's radial position
+  var
+    n: Vector2D
+    ballRadius = dist(self.pos, point2d(0, 0))
+
+  if ballRadius <= shield.radiusLoc:
+    # It hit the inner part of the shield
+    n = vector2d(0 - self.pos.x, 0 - self.pos.y)
+  elif ballRadius > shield.radiusLoc:
+    # It hit the outter part of the shield
+    n = vector2d(0 + self.pos.x, 0 + self.pos.y)
+    
+  n.normalize()
+
+  self.bounce(n)
+
 
