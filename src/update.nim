@@ -90,4 +90,8 @@ proc update*(app: App; ua: var UpdateArguments) =
   if ballVsGoal == ContainedBy:
     ball.onInsideGoal(goal)
 
+  let ballVsShields = ball.bounds.collidesWith(innerShield) or ball.bounds.collidesWith(outterShield)
+  if ballVsShields:
+    ball.onHitsShields()
+
       

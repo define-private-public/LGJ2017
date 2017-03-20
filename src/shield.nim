@@ -7,6 +7,7 @@ import colors
 import util
 import updateArguments
 import drawArguments
+import collisions
 
 
 type
@@ -82,4 +83,15 @@ proc draw*(
 ) =
   for b in self.bounds:
     b.draw(colLightBlue, Fill)
+
+
+# TODO this is highly ineffcient, maybe fix
+# See if a circle collides with this shield
+proc collidesWith*(c: Circle; shield: Shield): bool =
+  for b in shield.bounds:
+    if c.collidesWith(b) != None:
+      return true
+
+  return false
+
 

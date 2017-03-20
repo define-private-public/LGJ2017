@@ -7,6 +7,7 @@ import colors
 import util
 import updateArguments
 import drawArguments
+import collisions
 
 
 type
@@ -86,4 +87,8 @@ proc onInsideGoal*(
   goal: Goal
 ) =
   discard
+
+
+proc onHitsShields*(self: Ball) =
+  echo "Shield hit!"
 
