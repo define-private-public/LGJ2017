@@ -15,6 +15,12 @@ const
   minRimBouncesTillReset = 4
   maxRimBouncesTillReset = 12
 
+  minSpawnDistance = 7.0
+  maxSpawnDistance = 9.0
+
+  startVelocityMagnitude = 2.0
+
+
 type
   Ball* = ref BallObj
   BallObj = object of RootObj
@@ -34,9 +40,8 @@ proc newBall*(): Ball =
 
   result = new(Ball)
   result.bounds = newCircle(point2d(0, 0), app.worldScale * 0.035)
-  result.pos = point2d(1, 1)      # TODO need a spawning point!
-#  result.vel = vector2d(1.5, 1.5)
-  result.vel = vector2d(2, 2)
+  result.pos = Point2D()
+  result.vel = Vector2D()
 
   # Load up the bounce noises
   result.bounceNoises = @[]
@@ -45,6 +50,19 @@ proc newBall*(): Ball =
  
   result.numRimBounes = 0
   result.rimBouncesNeeded = random(minRimBouncesTillReset, maxRimBouncesTillReset).int
+
+
+# Setup the ball for the game, will give it a random position
+proc init*(self: Ball) =
+  let
+    dist = random(minSpawnDistance, maxSpawnDistance)
+    angle = random(0, TAU)
+
+  self.pos.x = dist * cos(angle)
+  self.pos.y = dist * sin(angle)
+
+  # Set the velcity to 2
+  self.vel = polarVector2d(angle, -startVelocityMagnitude)
 
 
 proc update*(

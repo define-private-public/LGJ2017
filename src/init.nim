@@ -12,3 +12,5 @@ proc init*(app: App) =
   echo "Set intial state."
   app.running = true
 
+  ball.init()
+
