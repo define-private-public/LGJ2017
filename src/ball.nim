@@ -151,9 +151,11 @@ proc onInsideGoal*(
   self: Ball;
   goal: Goal
 ) =
-  # TODO implement game over!
-  self.numRimBounes = 0
+  # Notify of the game over... (sad)
+  var app = getApp()
+  app.gameOver = true
 
+  
 
 proc onHitsShields*(
   self: Ball;
@@ -185,5 +187,7 @@ proc onTouchesGoal*(
   self: Ball;
   goal: Goal
 ) =
+  # Reset rim bounce count
+  self.numRimBounes = 0
   goal.touchedByBall()
   

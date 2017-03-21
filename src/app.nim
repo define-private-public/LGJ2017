@@ -16,6 +16,8 @@ type
 
     worldScale*: float
 
+    gameOver*: bool         # Is the game running or not?
+
 
 # the single instance
 var instance: App
@@ -31,6 +33,8 @@ proc newApp*(): App =
   result.running = false
 
   result.worldScale = 10
+
+  result.gameOver = true
 
   # Set the singleton
   instance = result

@@ -13,6 +13,8 @@ import collisions
 
 
 proc update*(app: App; ua: var UpdateArguments) =
+  var resetGameRequested = false
+
   # Poll for events
   var event: sdl.Event
   while sdl.pollEvent(event.addr) != 0:
@@ -40,10 +42,13 @@ proc update*(app: App; ua: var UpdateArguments) =
         of sdl.K_P:
           # Move inner CW
           ua.moveInnerShieldCW = true
+
+        # check for reset on game over
+        of sdl.K_R:
+          resetGameRequested = true
         
         # Forgot the rest
-        else:
-          discard
+        else: discard
     elif event.kind == sdl.KeyUp:
       let sym = event.key.keysym.sym
       case sym:
@@ -63,42 +68,47 @@ proc update*(app: App; ua: var UpdateArguments) =
           ua.moveInnerShieldCW = false
         
         # Forgot the rest
-        else:
-          discard
+        else: discard
 
-
-
-  arena.update(app, ua)
-  goal.update(app, ua)
-  innerShield.update(app, ua)
-  outterShield.update(app, ua)
-  ball.update(app, ua)
-
-  # Check for collisons
-  # Ball should always be inside the arena
-  let ballVsArenaRim = ball.bounds.collidesWith(arena.rimInner)
-  case ballVsArenaRim:
-    of None:
-      discard # TODO some special "Win" notification if this happens, which it shouldn'
-    of Intersects:
-      ball.onHitsArenaRim(arena)
-    else: discard
-
-  # Ball on the shields?
-  if ball.bounds.collidesWith(outterShield):
-    ball.onHitsShields(outterShield)
-  if ball.bounds.collidesWith(innerShield):
-    ball.onHitsShields(innerShield)
-
-  let ballVsGoal = ball.bounds.collidesWith(goal.bounds)
-  case ballVsGoal:
-    of Intersects:
-      goal.touchedByBall()
-    of ContainedBy:
-      # This is the gameover situation here
-      ball.onInsideGoal(goal)
-      goal.containsBall()
-    else: discard
+  
+  if not app.gameOver:
+    # Only update the game when it's not over
+    arena.update(app, ua)
+    goal.update(app, ua)
+    innerShield.update(app, ua)
+    outterShield.update(app, ua)
+    ball.update(app, ua)
+  
+    # Check for collisons
+    # Ball should always be inside the arena
+    let ballVsArenaRim = ball.bounds.collidesWith(arena.rimInner)
+    case ballVsArenaRim:
+      of None:
+        discard # TODO some special "Win" notification if this happens, which it shouldn'
+      of Intersects:
+        ball.onHitsArenaRim(arena)
+      else: discard
+  
+    # Ball on the shields?
+    if ball.bounds.collidesWith(outterShield):
+      ball.onHitsShields(outterShield)
+    if ball.bounds.collidesWith(innerShield):
+      ball.onHitsShields(innerShield)
+  
+    let ballVsGoal = ball.bounds.collidesWith(goal.bounds)
+    case ballVsGoal:
+      of Intersects:
+        goal.touchedByBall()
+      of ContainedBy:
+        # This is the gameover situation here
+        ball.onInsideGoal(goal)
+        goal.containsBall()
+      else: discard
+  else:
+    # Must be game over
+    if resetGameRequested:
+      # Restart the game!
+      init(app)
 
 
       
