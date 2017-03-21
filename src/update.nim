@@ -106,9 +106,10 @@ proc update*(app: App; ua: var UpdateArguments) =
       else: discard
   else:
     # Must be game over
+    app.printGameStatsOnce()
     if resetGameRequested:
       # Restart the game!
-      init(app)
+      app.reset()
 
 
       

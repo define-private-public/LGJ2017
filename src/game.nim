@@ -158,10 +158,6 @@ proc main() =
     ua.frameNumber = frameCount
     ua.deltaTime = dt
     ua.totalTime = t
-#    ua.moveOutterShieldCCW = false
-#    ua.moveOutterShieldCW = false
-#    ua.moveInnerShieldCCW = false
-#    ua.moveInnerShieldCW = false
 
     da.deltaTime = dt
     da.totalTime = t

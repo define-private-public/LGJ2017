@@ -145,6 +145,8 @@ proc onHitsArenaRim*(
   n.normalize()
   self.bounce(n)
 
+  getApp().numRimBounces += 1
+
 
 # What to do when the ball is fully contained by the goal
 proc onInsideGoal*(
@@ -152,8 +154,7 @@ proc onInsideGoal*(
   goal: Goal
 ) =
   # Notify of the game over... (sad)
-  var app = getApp()
-  app.gameOver = true
+  getApp().gameOver = true
 
   
 
@@ -161,6 +162,8 @@ proc onHitsShields*(
   self: Ball;
   shield: Shield
 ) =
+  var app = getApp()
+
   # We can reset the rim bounce count
   self.numRimBounes = 0
 
@@ -174,9 +177,11 @@ proc onHitsShields*(
   if ballRadius <= shield.radiusLoc:
     # It hit the inner part of the shield
     n = vector2d(0 - self.pos.x, 0 - self.pos.y)
+    app.numInnerShieldBounces += 1
   elif ballRadius > shield.radiusLoc:
     # It hit the outter part of the shield
     n = vector2d(0 + self.pos.x, 0 + self.pos.y)
+    app.numOutterShieldBounces += 1
     
   n.normalize()
   self.bounce(n)
@@ -190,4 +195,6 @@ proc onTouchesGoal*(
   # Reset rim bounce count
   self.numRimBounes = 0
   goal.touchedByBall()
+
+  getApp().numSideSwipes += 1
   

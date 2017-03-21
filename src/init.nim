@@ -10,8 +10,9 @@ import app
 
 proc init*(app: App) =
   app.running = true
-  app.gameOver = false
 
+  app.reset()
+  
   innerShield.init()
   outterShield.init()
   ball.init()
