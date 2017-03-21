@@ -6,6 +6,7 @@ import math
 import basic2d
 import colors
 import random
+import stopwatch
 import util
 import updateArguments
 import drawArguments
@@ -21,6 +22,8 @@ const
   startVelocityMagnitude = 3.0
   maxVelocityMagnitude = 22.5
 
+  requiredCollisionTimeSpacing = 0.1   # In seconds
+
 
 type
   Ball* = ref BallObj
@@ -34,6 +37,8 @@ type
     numRimBounes: int       # Since the start of the sequence
     rimBouncesNeeded: int   # Num needed for the lap
 
+    timeSinceLastCollision: Stopwatch   # Need to make sure we don't have four collsions in 1/30 of a second...
+
 
 
 proc newBall*(): Ball =
@@ -43,6 +48,7 @@ proc newBall*(): Ball =
   result.bounds = newCircle(point2d(0, 0), app.worldScale * 0.035)
   result.pos = Point2D()
   result.vel = Vector2D()
+  result.timeSinceLastCollision = stopwatch(false)
 
   # Load up the bounce noises
   result.bounceNoises = @[]
@@ -69,6 +75,8 @@ proc init*(self: Ball) =
   self.numRimBounes = 0
   self.rimBouncesNeeded = random(minRimBouncesTillReset, maxRimBouncesTillReset).int
 
+  self.timeSinceLastCollision.restart()
+
 
 proc update*(
   self: Ball;
@@ -93,6 +101,10 @@ proc draw*(
 # Will bounce the ball about the normal
 # Will increase the speed
 proc bounce(self: Ball; n: Vector2D) =
+  # Don't do a bounce if it hasn't been long enough
+  if (self.timeSinceLastCollision.secs < requiredCollisionTimeSpacing):
+    return
+
   # Which way should the ball go?
   if self.numRimBounes >= self.rimBouncesNeeded:
     # Reset the rim bounce counter
@@ -130,6 +142,9 @@ proc bounce(self: Ball; n: Vector2D) =
  
   # Play a bounce noise
   discard mixer.playChannel(-1, random(self.bounceNoises), 0)
+
+  # restart the collision timer
+  self.timeSinceLastCollision.restart()
 
 
 
