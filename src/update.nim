@@ -79,20 +79,26 @@ proc update*(app: App; ua: var UpdateArguments) =
   let ballVsArenaRim = ball.bounds.collidesWith(arena.rimInner)
   case ballVsArenaRim:
     of None:
-      discard # TODO some special "Win" notification
+      discard # TODO some special "Win" notification if this happens, which it shouldn'
     of Intersects:
       ball.onHitsArenaRim(arena)
-    else:
-      discard
+    else: discard
 
-  # TODO noises on just an intersect
-  let ballVsGoal = ball.bounds.collidesWith(goal.bounds)
-  if ballVsGoal == ContainedBy:
-    ball.onInsideGoal(goal)
-
+  # Ball on the shields?
   if ball.bounds.collidesWith(outterShield):
     ball.onHitsShields(outterShield)
   if ball.bounds.collidesWith(innerShield):
     ball.onHitsShields(innerShield)
+
+  let ballVsGoal = ball.bounds.collidesWith(goal.bounds)
+  case ballVsGoal:
+    of Intersects:
+      goal.touchedByBall()
+    of ContainedBy:
+      # This is the gameover situation here
+      ball.onInsideGoal(goal)
+      goal.containsBall()
+    else: discard
+
 
       

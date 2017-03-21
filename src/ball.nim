@@ -77,15 +77,15 @@ proc update*(
   # Update ball position
   self.pos += self.vel * ua.deltaTime
 
+  # Update bounds locations
+  self.bounds.center = self.pos
+
 
 proc draw*(
   self: Ball;
   app: App;
   da: DrawArguments
 ) =
-  # Update bounds locations
-  self.bounds.center = self.pos
-
   self.bounds.draw(colWhite, Fill)
 
 
@@ -179,3 +179,11 @@ proc onHitsShields*(
   n.normalize()
   self.bounce(n)
 
+
+# This is for when the ball touches the goal, but is not in it
+proc onTouchesGoal*(
+  self: Ball;
+  goal: Goal
+) =
+  goal.touchedByBall()
+  

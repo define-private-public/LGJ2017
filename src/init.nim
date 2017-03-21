@@ -15,4 +15,5 @@ proc init*(app: App) =
   innerShield.init()
   outterShield.init()
   ball.init()
+  goal.init()
 

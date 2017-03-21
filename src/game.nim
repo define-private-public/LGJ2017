@@ -6,7 +6,6 @@ import strfmt
 import stopwatch
 import
   sdl2/sdl,
-  sdl2/sdl_image as img,
   sdl2/sdl_ttf as ttf,
   sdl2/sdl_mixer as mixer
 import opengl
@@ -35,12 +34,6 @@ proc initSDL(app: App): bool =
   if sdl.init(sdl.InitEverything) != 0:
     echo "Error setting up SDL:"
     echo sdl.getError()
-    return false
-
-  # SDL_image
-  if img.init(img.InitPng) == 0:
-    echo "Error setting up SDL_image:"
-    echo img.geterror()
     return false
 
   # SDL_ttf
@@ -129,7 +122,6 @@ proc shutdownSDL(app: App) =
   # SDL & Libraries
   mixer.quit()
   ttf.quit()
-  img.quit()
   sdl.quit()
 
 
