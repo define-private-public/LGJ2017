@@ -6,7 +6,6 @@ import strfmt
 import stopwatch
 import
   sdl2/sdl,
-  sdl2/sdl_ttf as ttf,
   sdl2/sdl_mixer as mixer
 import opengl
 import geometry
@@ -36,12 +35,6 @@ proc initSDL(app: App): bool =
     echo sdl.getError()
     return false
 
-  # SDL_ttf
-  if ttf.init() != 0:
-    echo "Error setting up SDL_ttf:"
-    echo ttf.geterror()
-    return false
-
   # SDL_mixer
   if mixer.init(mixer.InitMod or mixer.InitMp3 or mixer.InitOgg) == 0:
     echo "Error setting up SDL_mixer:"
@@ -66,7 +59,7 @@ proc initSDL(app: App): bool =
 
   # Create the window
   app.window = sdl.createWindow(
-    "LGJ 2017 (w/ OpenGL ES 2.0)",
+    "Pucker Up (Linux Game Jam 2017)",
     sdl.WindowPosUndefined,
     sdl.WindowPosUndefined,
     app.screenWidth,
@@ -121,7 +114,6 @@ proc shutdownSDL(app: App) =
 
   # SDL & Libraries
   mixer.quit()
-  ttf.quit()
   sdl.quit()
 
 
