@@ -18,7 +18,8 @@ const
   minSpawnDistance = 7.0
   maxSpawnDistance = 8.0
 
-  startVelocityMagnitude = 2.0
+  startVelocityMagnitude = 3.0
+  maxVelocityMagnitude = 22.5
 
 
 type
@@ -119,8 +120,8 @@ proc bounce(self: Ball; n: Vector2D) =
   mag += 0.15
 
   # Cap the magnitude 
-  if mag > 20:
-    mag = 20
+  if mag > maxVelocityMagnitude:
+    mag = maxVelocityMagnitude
 
   self.vel = polarVector2d(rad, mag)
 
@@ -195,6 +196,4 @@ proc onTouchesGoal*(
   # Reset rim bounce count
   self.numRimBounes = 0
   goal.touchedByBall()
-
-  getApp().numSideSwipes += 1
   

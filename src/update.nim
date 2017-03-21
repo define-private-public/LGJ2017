@@ -98,6 +98,7 @@ proc update*(app: App; ua: var UpdateArguments) =
     let ballVsGoal = ball.bounds.collidesWith(goal.bounds)
     case ballVsGoal:
       of Intersects:
+        ball.onTouchesGoal(goal)
         goal.touchedByBall()
       of ContainedBy:
         # This is the gameover situation here
@@ -110,6 +111,7 @@ proc update*(app: App; ua: var UpdateArguments) =
     if resetGameRequested:
       # Restart the game!
       app.reset()
+      init(app)
 
 
       

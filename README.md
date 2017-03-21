@@ -7,4 +7,11 @@ It uses:
  - & More! (TODO document "more,")
  - my stopwatch
  - Get OpenGL ES 2.0 working
+ - strfmt
+
+TODO instructions
+TODO what this is
+TODO controls
+TODO game over
+TODO LICENSE!
 

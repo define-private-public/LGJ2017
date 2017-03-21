@@ -6,6 +6,14 @@ import sdl2/sdl
 import stopwatch
 import strfmt
 
+const
+  rimBounceMultiplier = 1.0
+  outterShieldBounceMultiplier = 1.1
+  innerShieldBounceMultiplier = 1.3
+  sideSwipeMultiplier = 5.0
+  knockOutMultiplier = 500.0          # These rarely happen
+
+
 type
   App* = ref AppObj
   AppObj = object
@@ -46,6 +54,12 @@ proc newApp*(): App =
   result.worldScale = 10
   result.gameOver = false
 
+  result.numRimBounces = 0
+  result.numOutterShieldBounces = 0
+  result.numInnerShieldBounces = 0
+  result.numSideSwipes = 0
+  result.numKnockOuts = 0
+
   result.gameTime = stopwatch(false)
   result.shownStatsOnGameOver = false
 
@@ -71,14 +85,6 @@ proc reset*(self: App) =
   self.shownStatsOnGameOver = false
 
 
-const
-  rimBounceMultiplier = 1.0
-  outterShieldBounceMultiplier = 1.1
-  innerShieldBounceMultiplier = 1.5
-  sideSwipeMultiplier = 2.5
-  knockOutMultiplier = 500.0          # These rarely happen
-
-
 # Will print the stats of the game once, and only once, until the
 # `shownStatsOnGameOver` field is set to `false` again
 proc printGameStatsOnce*(self: App) =
@@ -89,7 +95,7 @@ proc printGameStatsOnce*(self: App) =
   let totalBounces = self.numRimBounces + self.numOutterShieldBounces + self.numInnerShieldBounces 
 
   echo "Game Over, stats:"
-  echo "  Total Time: {0} secs".fmt(self.gameTime.secs.format("0.2f")
+  echo "  Total Time: {0} secs".fmt(self.gameTime.secs.format("0.2f"))
   echo "  Rim bounces [{0}x]: {1}".fmt(rimBounceMultiplier, self.numRimBounces)
   echo "  Outside part of shield bounces [{0}x]: {1}".fmt(outterShieldBounceMultiplier, self.numOutterShieldBounces)
   echo "  Inside part of shield bounces [{0}x]: {1}".fmt(innerShieldBounceMultiplier, self.numInnerShieldBounces)

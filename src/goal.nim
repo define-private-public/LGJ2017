@@ -12,7 +12,7 @@ const
   warningColor = colSalmon
   gameOverColor = colDarkRed
 
-  warningDuration = 1.5   # in seconds
+  warningDuration = 1.25   # in seconds
 
 
 type
@@ -67,6 +67,9 @@ proc update*(
   if self.inWarningMode and not self.inGameOverMode and (self.colorResetStopwatch.secs > warningDuration):
     self.color = normalColor
     self.inWarningMode = false
+    
+    getApp().numSideSwipes += 1
+
 
 
 
@@ -109,3 +112,4 @@ proc containsBall*(self: Goal) =
   self.color = gameOverColor
 
   self.inGameOverMode = true
+
