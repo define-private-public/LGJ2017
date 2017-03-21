@@ -7,7 +7,8 @@ Gamer](https://www.youtube.com/channel/UCv1Kcz-CuGM6mxzL3B1_Eiw).  All of the
 development and testing was done on a Ubuntu 16.04 machine, so best of luck if
 you want to build/run it on something else. :]
 
-- [ ] TODO screenshot!
+![Pucker Up
+Screenshot](https://gitlab.com/define-private-public/LGJ2017/raw/stable/screenshots/pucker_up.png)
 
 The license for this game is GPLv3, which the details of that can be found in
 the files `LICENSE.txt`
@@ -20,7 +21,7 @@ Needed to Run
  - A monitor that has at least 800x800 pixels (sorry, that screen size is hard
    coded in, my bad)
  - Some sort of audio device
- - `SDL2` and `SDL2_<ixer` runtime libraries installed
+ - `SDL2` and `SDL2_Mixer` runtime libraries installed
 
 
 How To Play
@@ -31,14 +32,16 @@ that you can bounce the puck off of.  Your score at the end of the game will
 appear in the terminal window.
 
 Controls:
- - `Esc` -- Quit the game
- - `R` -- Reset the game
  - `Q` -- Move outter shield counter clock wise
  - `W` -- Move outter shield clock wise
  - `O` -- Move inner shield counter clock wise
  - `P` -- Move inner shield clock wise
+ - `Esc` -- Quit the game
+ - `R` -- Reset the game
 
 (I'm sorry for the QWOP control sceheme...  It happened by accident, I swear.)
+
+Your score will be displayed on the terminal window at the end of the game.
 
 
 How To Build
