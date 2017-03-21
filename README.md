@@ -47,8 +47,6 @@ Controls:
 
 (I'm sorry for the QWOP control sceheme...  It happened by accident, I swear.)
 
-Your score will be displayed on the terminal window at the end of the game.
-
 
 How To Build
 ------------
