@@ -11,7 +11,13 @@ you want to build/run it on something else. :]
 Screenshot](https://gitlab.com/define-private-public/LGJ2017/raw/stable/screenshots/pucker_up.png)
 
 The license for this game is GPLv3, which the details of that can be found in
-the files `LICENSE.txt`
+the files `LICENSE.txt`.
+
+The source for this game can be found on GitLab here:
+  https://gitlab.com/define-private-public/LGJ2017
+
+Though here is a GitHub mirror:
+  https://github.com/define-private-public/LGJ2017
 
 
 Needed to Run
