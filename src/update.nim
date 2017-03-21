@@ -28,6 +28,7 @@ proc update*(app: App; ua: var UpdateArguments) =
         of sdl.K_Escape:
           # Quit
           app.running = false
+          app.printGameStatsOnce()
 
         # move the shields
         of sdl.K_Q:
@@ -45,7 +46,8 @@ proc update*(app: App; ua: var UpdateArguments) =
 
         # check for reset on game over
         of sdl.K_R:
-          resetGameRequested = true
+          if app.gameOver:
+              resetGameRequested = true
         
         # Forgot the rest
         else: discard
