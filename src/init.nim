@@ -12,7 +12,8 @@ proc init*(app: App) =
   app.running = true
 
   app.reset()
-  
+
+  arena.init()
   innerShield.init()
   outterShield.init()
   ball.init()

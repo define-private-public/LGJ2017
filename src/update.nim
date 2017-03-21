@@ -83,10 +83,16 @@ proc update*(app: App; ua: var UpdateArguments) =
     # Ball should always be inside the arena
     let ballVsArenaRim = ball.bounds.collidesWith(arena.rimInner)
     case ballVsArenaRim:
-      of None:
-        discard # TODO some special "Win" notification if this happens, which it shouldn'
       of Intersects:
+        # A standard bounce
         ball.onHitsArenaRim(arena)
+
+      of None:
+        # Well damn, it went out
+        arena.onBallOutside()
+
+        # have to reset the ball, lol
+        ball.init()
       else: discard
   
     # Ball on the shields?
