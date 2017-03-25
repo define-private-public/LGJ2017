@@ -36,13 +36,13 @@ proc update*(app: App; ua: var UpdateArguments) =
           ua.moveOutterShieldCCW = true
         of sdl.K_W:
           # Move outter CW
-          ua.moveOutterShieldCW = true
+          ua.moveInnerShieldCCW = true
         of sdl.K_O:
           # Move inner CCW
-          ua.moveInnerShieldCCW = true
+          ua.moveInnerShieldCW = true
         of sdl.K_P:
           # Move inner CW
-          ua.moveInnerShieldCW = true
+          ua.moveOutterShieldCW = true
 
         # check for reset on game over
         of sdl.K_R:
@@ -61,13 +61,13 @@ proc update*(app: App; ua: var UpdateArguments) =
           ua.moveOutterShieldCCW = false
         of sdl.K_W:
           # Move outter CW
-          ua.moveOutterShieldCW = false
+          ua.moveInnerShieldCCW = false
         of sdl.K_O:
           # Move inner CCW
-          ua.moveInnerShieldCCW = false
+          ua.moveInnerShieldCW = false
         of sdl.K_P:
           # Move inner CW
-          ua.moveInnerShieldCW = false
+          ua.moveOutterShieldCW = false
         
         # Forgot the rest
         else: discard

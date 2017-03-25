@@ -39,9 +39,9 @@ appear in the terminal window.
 
 Controls:
  - `Q` -- Move outter shield counter clock wise
- - `W` -- Move outter shield clock wise
- - `O` -- Move inner shield counter clock wise
- - `P` -- Move inner shield clock wise
+ - `W` -- Move inner shield counter clock wise
+ - `O` -- Move inner shield clock wise
+ - `P` -- Move outter shield clock wise
  - `Esc` -- Quit the game
  - `R` -- Reset the game
 
