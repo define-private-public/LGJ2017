@@ -3,9 +3,10 @@ Pucker Up (Linux Game Jam 2017)
 
 Pucker Up is a game made I made for the [Linux Game Jam
 2017](https://itch.io/jam/linux-jam-2017) which was hosted by [The Linux
-Gamer](https://www.youtube.com/channel/UCv1Kcz-CuGM6mxzL3B1_Eiw).  All of the
-development and testing was done on a Ubuntu 16.04 machine, so best of luck if
-you want to build/run it on something else. :]
+Gamer](https://www.youtube.com/channel/UCv1Kcz-CuGM6mxzL3B1_Eiw).
+
+**Update 03/28/17**: Last night I finished porting the game to HTML5, you can
+play it here: https://16bpp.net/games/pucker-up-lgj-2017
 
 ![Pucker Up
 Screenshot](https://gitlab.com/define-private-public/LGJ2017/raw/stable/screenshots/pucker_up.png)
